@@ -1,0 +1,45 @@
+section .data ;variables que no cambiaran
+    x dd 40; la variable es x, db significa 1 byte y 50 el valor
+    y dd 2; la variable es y, db significa 1 byte y 10 el valor
+    msg dd  "Division de x y y es " ;msg la variable db es 1 byte y "" el valor
+    len equ $ - msg;la variable es len, equ mide el total de caracteres de msg
+
+segment .bss  ;variables que si cambian
+
+    res resb 2 ;la variable es res, resb es reservar bytes y en este caso es 2
+    
+section .text ;para e|mpezar el programa
+    global _start ;para empezar el programa
+
+_start: ;para empezar el programa
+
+    mov al, [x] ; coloca x en al
+    mov bl, [y] ; coloca x en al
+    div bl
+    
+
+    mov ah, 0; limpio el divisor ah
+    mov bl, 10 ; preparo para dividir bl que es la parte izquierda de al, entre 10 para sacar los digitos por separado
+    div bl ; divido el resultado al entre 10
+    
+    add al, '0' ; le sumo 0 (30 en ascii) para poder imprimir al primer digito
+    add ah, '0' ; le sumo 0 (30 en ascii) para poder imprimir al segundo digito
+    
+    mov [res], al
+    mov [res +1], ah
+
+;para imprimir
+    mov     ecx, msg ;movemos la direccion del mensaje a la variable ecx
+    mov     edx, len ;le decimos que el valor que tendrá la impresión es la del msg
+    mov     ebx, 1 ;le decimos que imprimiremos en pantalla o consola, NO ALTERA VAR
+    mov     eax, 4 ;le decimos que usaremos sys_write, NO ALTERA VARIABLE
+    int     0x80 ;procesa la solicitud
+
+    mov     ecx, res ;movemos la direccion de la división a ecx
+    mov     edx, 2 ;le decimos que queremos imprimir un byte de edx
+    mov     ebx, 1 ;le decimos que imprimiremos en pantalla o consola, NO ALTERA VAR
+    mov     eax, 4 ;le decimos que usaremos sys_write, NO ALTERA VARIABLE
+    int     0x80 ;proceso la solicitud
+
+    mov     eax, 1 ;salimos del programa
+    int     0x80 ;proceso la solicitud
