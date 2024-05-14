@@ -36,7 +36,7 @@ _start: ;para empezar el programa
     mov     eax, 4 ;le decimos que usaremos sys_write, NO ALTERA VARIABLE
     int     0x80 ;procesa la solicitud
 
-    mov     ecx, res ;movemos la direccion de la suma a ecx
+    mov     ecx, res ;movemos la direccion de la resta a ecx
     mov     edx, 2 ;le decimos que queremos imprimir un byte de edx
     mov     ebx, 1 ;le decimos que imprimiremos en pantalla o consola, NO ALTERA VAR
     mov     eax, 4 ;le decimos que usaremos sys_write, NO ALTERA VARIABLE
